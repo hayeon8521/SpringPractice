@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+ <tr>
+	 <th>no</th>
+	 <th>departmentId</th>
+	 <th>departmentName</th>
+	 <th>managerId</th>
+	 <th>locationId</th>
+ </tr>
+  <!-- 처음 루프번수, 2번쨰 상태변수 ${start.count} 1부터 index는 0부터-->
+	<tr th:each="dept, stat : ${deptList}">
+		<td th:text="${stat.index}">1</td>
+		<td th:text="${dept.departmentId}">100</td>
+		<td th:text="${dept.departmentName}">100</td>
+		<td th:text="${dept.managerId}">100</td>
+		<td th:text="${dept.locationId}">100</td>
+	</tr>
+</table>
+</body>
+</html>
