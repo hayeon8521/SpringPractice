@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- 사용 선언하기 -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>thymeleaf 연습</title>
+    <!-- 타임리프 스타일 연습 -->
+    <style>
+        .high {
+            color: red;
+        }
+        .low {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>employee_id</th>
+            <th>name</th>
+            <th>salary</th>
+            <th>hireDate</th>
+        </tr>
+        <!-- for each 문 -->
+        <tr th:each="emp, idx : ${empList}">
+            <td th:text="${idx.count}">01</td> <!-- 1부터하려면 count 0부터하려면 index -->
+            <td th:text="${emp.employeeId}">100</td>
+            <!--<td th:text="${emp.lastName}"></td>-->
+            <td>[[${emp.firstName}]] [[${emp.lastName}]]</td>
+            <!-- 클래스에 조건으로 호출하기 -->
+            <td th:text="${emp.salary}" th:class="${emp.salary} > 10000 ? 'high':'low'">1000</td>
+            <td th:text="${#dates.format(emp.hireDate, 'yyyy-MM-dd')}"></td>   <!--날짜 정리는 이렇게 -->
+        </tr>
+    </table>
+    <script th:inline="javascript">
+        let list = [[${empList}]];
+    </script>
+</body>
+
+</html>

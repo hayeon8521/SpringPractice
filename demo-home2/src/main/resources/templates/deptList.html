@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- 사용 선언하기 -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Department 리스트</title>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>DEPARTMENT_ID</th>
+            <th>DEPARTMENT_NAME</th>
+            <th>MANAGER_ID</th>
+            <th>LOCATION_ID</th>
+        </tr>
+        <!-- for each 문 -->
+        <tr th:each="dpet, idx : ${deptList}">
+            <td th:text="${idx.index}">01</td> <!-- 1부터하려면 count 0부터하려면 index -->
+            <td th:text="${dpet.departmentId}">100</td>
+            <td th:text="${dpet.departmentName}">100</td>
+            <td th:text="${dpet.managerId}">100</td>
+            <td th:text="${dpet.locationId}">100</td>
+        </tr>
+    </table>
+</body>
+
+</html>
