@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>sample.html</title>
+   <meta charset="UTF-8">
+   <title>sample.html</title>
 </head>
+
 <body>
-sample
+   sample <br>
+   [[${serverTime}]] <br>
+   [[${todo}]] <br>
+   title = [[${param.title}]] <br> <!-- 그냥 겟값 이렇게 당길수도있음 -->
+   [[${dept}]] <br>
+   <div th:text="${serverTime}"></div>
 </body>
+
 </html>

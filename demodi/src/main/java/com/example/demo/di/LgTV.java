@@ -1,7 +1,5 @@
 package com.example.demo.di;
 
-import org.springframework.stereotype.Component;
-
 import lombok.Data;
 
 //빈등록하라는 옵션

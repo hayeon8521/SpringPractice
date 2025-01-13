@@ -2,8 +2,6 @@ package com.example.demo;
 
 import org.junit.jupiter.api.Test;
 
-import com.example.demo.di.SampleDto;
-
 public class LombokTest {
 	
 	@Test

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>update.html</title>
+</head>
+<body>
+[[${insertData}]]
+<form action="update" method="post">
+	id<input th:text="${insertData.departmentId}" name="departmentId"><br>
+	name<input th:text="${insertData.departmentName}" name="departmentName"><br>
+	manager<input th:text="${insertData.managerId}" name="managerId"><br>
+	location<input th:text="${insertData.locationId}" name="locationId"><br>
+	<button type="submit">수정하기</button>
+	</form>
+</body>
+</html>
