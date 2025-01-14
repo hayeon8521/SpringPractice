@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.board.mapper.BoardMapper">
+<!-- com.example.demo.board.mapper.BoardMapper 인터페이스 주소!! 주요함 -->
+
+	<insert id="insert" parameterType="BoardDTO">
+		INSERT INTO 
+		tbl_board ( bno, 
+		           title, 
+		           content, 
+		           writer ) 
+		values ( seq_board.nextval, 
+		         #{title}, 
+		         #{content}, 
+		         #{writer} )
+	</insert>
+	
+	<!-- 업데이트 -->
+	<update id="update" parameterType="BoardDTO">
+		UPDATE tbl_board
+		    SET
+		        title = #{title},
+		        content = #{content},
+		        writer = #{writer},
+		        updateDate = sysdate
+		WHERE bno = #{bno}
+	</update>
+
+	<!-- 기본키 삭제 -->
+	<delete id="delete" parameterType="long">
+		DELETE tbl_board WHERE bno = #{bno}
+	</delete>
+	
+	<!-- 단건조회 --> 
+	<select id="read" resultType="BoardDTO" parameterType="long">
+		SELECT 
+	         bno,
+			title,
+			content,
+			writer,
+			regdate
+	    FROM tbl_board
+	   WHERE bno = #{bno}
+	</select>
+	
+	<!-- 전체조회 -->
+	<select id="getList" resultType="BoardDTO">
+		SELECT bno,
+	         title,
+	         content,
+	         writer,
+	         regdate
+	    FROM tbl_board
+	  <![CDATA[
+	   WHERE bno > 0
+	  ]]>
+		<!--  <![CDATA[
+		WHERE bon > 0
+		]]> 오더바이랑 같은용도 기본키라서 이렇게하면 코스트가 낮아짐 -->
+	</select>
+
+</mapper>
