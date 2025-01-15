@@ -19,17 +19,21 @@
 
             <div class="mb-3">
                <label for="title" class="form-label">제목</label>
-               <input type="text" class="form-control" id="title" name="title">
+               <input type="text" class="form-control" id="title" name="title" th:value="${boardDTO.title}">
+               <div class="error" th:errors="${boardDTO.title}"></div>
+               <!-- 유효성 검사, 서버에서 에러나면 여기로 넘어오면서 여기에 값이 떠오름 -->
             </div>
 
             <div class="mb-3">
                <label for="content" class="form-label">내용</label>
                <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+               <div class="error" th:errors="${boardDTO.content}" th:text="${boardDTO.content}"></div>
             </div>
 
             <div class="mb-3">
                <label for="writer" class="form-label">글쓴이</label>
-               <input type="text" class="form-control" id="writer" name="writer">
+               <input type="text" class="form-control" id="writer" name="writer" th:value="${boardDTO.writer}">
+               <div class="error" th:errors="${boardDTO.writer}"></div>
             </div>
 
             <button class="btn btn-success" type="button" data-bs-toggle="modal"
@@ -66,8 +70,11 @@
          let writer = document.querySelector('#writer').value;
          const modal = bootstrap.Modal.getInstance(document.querySelector('#registermodal'));
 
+         //여기에 놔둠
+         document.querySelector('#registerform').submit();
          if(title && content && writer){
-            document.querySelector('#registerform').submit();
+        	 //서버 유효성 검사 확인하려고 막음
+            //document.querySelector('#registerform').submit();
          }else{
             document.querySelector('#guidespan').innerText = '모든 값을 입력해 주세요';
             modal.hide();

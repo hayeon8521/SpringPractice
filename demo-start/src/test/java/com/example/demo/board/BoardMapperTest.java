@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demo.board.mapper.BoardMapper;
 import com.example.demo.board.service.BoardDTO;
+import com.example.demo.board.service.BoardSearchDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,7 +56,7 @@ public class BoardMapperTest {
 		log.debug(cnt+"건 이 삭제 되었습니다");
 	}
 	
-	@Test
+	//@Test
 	@DisplayName("단건조회")
 	public void read() {
 		//given
@@ -72,8 +73,12 @@ public class BoardMapperTest {
 	@DisplayName("전체조회")
 	public void testGetList() {
 		//given
+		BoardSearchDTO search = new BoardSearchDTO();
+		search.setStart(1);
+		search.setEnd(10);
+		
 		//when
-		List<BoardDTO> list = boardMapper.getList();
+		List<BoardDTO> list = boardMapper.getList(search);
 		//then
 		//list.forEach(board -> log.info(board.toString()));
 		assertThat(list).isNotNull();

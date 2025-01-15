@@ -12,12 +12,50 @@
 
 <body>
 	<div class="container">
-		<h3>하연 게시글</h3>
+		<h3><a href="list">하연 게시글</a></h3>
 		<div>
 			<button type="button" class="btn btn-info" id="btnRegister">게시글
 				등록</button>
 		</div>
+		<!-- 검색폼 시작 -->
+		<div class="row p-1">
+			<div class="col-lg-12">
+				<!-- boardSearchDTO 객체이름이고 첫글짜만 소문자로 하는거임 객체 변수명아니고 객체명임 -->
+				<form name="searchForm" action="list" method="get" th:object="${boardSearchDTO}">
+					<div class="d-flex mb-3">
+						<div class="p-2">
+							<select class="form-control" th:field="*{type}">
+								<option value="">검색조건</option>
+								<option value="T">제목</option>
+								<option value="C">내용</option>
+								<option value="W">작성자</option>
+								<option value="TC">제목 or 내용</option>
+								<option value="TW">제목 or 작성자</option>
+								<option value="TWC">제목 or 내용 or 작성자</option>
+							</select>
+						</div>
+						<div class="p-2">
+							<input class="form-control" type="text" th:field="*{keyword}" />
+						</div>
+						<div class="p-2">
+							<input class="form-control" type="hidden" name="page" value="1" /> <!-- 검색하면 1페이지로 넘어가게 디폴트로 1해줬음 -->
+						</div>
+						<div class="p-2">
+							<select class="form-control" th:field="*{pageUnit}">
+								<option value="10">10</option>
+								<option value="20">20</option>
+								<option value="30">30</option>
+							</select>
+							<!-- <input type="hidden" name="pageUnit" /> -->
+						</div>
+						<button class="btn btn-success">Search</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- 검색폼 끝 -->
 
+		<!-- 목록 시작 -->
 		<table class="table table-hover">
 			<thead>
 				<tr class="table-dark">
@@ -36,8 +74,7 @@
 					<td th:text="${board.writer}">작성자</td>
 					<td th:text="${#dates.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}">2025/01/06</td>
 					<td>
-						<button class="btn btn-warning"
-							th:onclick="|location.href='modify?bno=${board.bno}'|">수정</button>
+						<button class="btn btn-warning" th:onclick="|location.href='modify?bno=${board.bno}'|">수정</button>
 						<button class="btn btn-danger deletebtn" type="button" data-bs-toggle="modal"
 							data-bs-target="#removemodal" th:data-bno="${board.bno}">삭제</button>
 						<!-- <button class="btn btn-danger"
@@ -46,11 +83,31 @@
 				</tr>
 			</tbody>
 		</table>
+		<!-- 목록 끝 -->
+
+		<!-- 페이징 시작 -->
+		<nav>
+			<ul class="pagination justify-content-center">
+				<li class="page-item" th:classappend="${paging.startPage} == 1 ? disabled">
+					<a class="page-link" th:href="|javascript:gopage(${paging.startPage}-1)|">Previous</a>
+				</li>
+
+				<li th:each="num : *{#numbers.sequence(paging.startPage, paging.endPage)}" class="page-item"
+					th:classappend="${num} == ${paging.page} ? active">
+					<a class="page-link" th:href="|javascript:gopage(${num})|" th:text="${num}">2</a>
+				</li>
+
+				<li class="page-item" th:classappend="${paging.endPage} >= ${paging.lastPage} ? disabled">
+					<a class="page-link" th:href="|javascript:gopage(${paging.endPage}+1)|">Next</a>
+				</li>
+			</ul>
+		</nav>
+		<!-- 페이징 종료 -->
 	</div>
 
 	<!-- 처리 토스트 -->
 	<div class="toast-container position-fixed top-0 end-0 p-3">
-		<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		<div id="liveToast" class="toast  bg-info" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="toast-header">
 				<strong class="me-auto">처리 완료</strong>
 				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -59,7 +116,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Modal -->
 	<div class="modal fade" id="removemodal" tabindex="-1" aria-labelledby="removemodalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -81,7 +138,7 @@
 		const toastLiveExample = document.getElementById('liveToast');
 		//const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
 		const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample, { delay: 1000 });
-		
+
 		//const result = [[${param.result}]]
 		const result = [[${ result }]]
 		const result2 = [[${ result2 }]]
@@ -101,7 +158,7 @@
 		btnRegister.addEventListener("click", () => {
 			location.href = "/board/register";
 		});
-		
+
 		document.querySelectorAll('.deletebtn').forEach(button => {
 			button.addEventListener('click', function () {
 				const bno = this.getAttribute('data-bno');
@@ -112,16 +169,23 @@
 			});
 		});
 		function register() {
-		    // modal 변수 초기화
-		    const modal = bootstrap.Modal.getInstance(document.querySelector('#removemodal'));
-		    const bno = document.getElementById('removemodal').getAttribute('data-bno');
-		    if (bno) {
-		        location.href = 'remove?bno=' + bno; // 삭제 URL로 이동
-		    } else {
-		        document.querySelector('.toast-body').innerText = '삭제 실패 되었습니다.';
+			// modal 변수 초기화
+			const modal = bootstrap.Modal.getInstance(document.querySelector('#removemodal'));
+			const bno = document.getElementById('removemodal').getAttribute('data-bno');
+			if (bno) {
+				location.href = 'remove?bno=' + bno; // 삭제 URL로 이동
+			} else {
+				document.querySelector('.toast-body').innerText = '삭제 실패 되었습니다.';
 				toastBootstrap.show();
-		        modal.hide(); // bno가 없으면 모달 닫기
-		    }
+				modal.hide(); // bno가 없으면 모달 닫기
+			}
+		}
+
+		//페이징 이동
+		function gopage(p) {
+			searchForm.page.value = p;
+			searchForm.submit();
+			//location.href = "list?page="+p;
 		}
 	</script>
 </body>

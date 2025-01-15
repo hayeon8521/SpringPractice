@@ -45,18 +45,57 @@
 	
 	<!-- 전체조회 -->
 	<select id="getList" resultType="BoardDTO">
-		SELECT bno,
-	         title,
-	         content,
-	         writer,
-	         regdate
-	    FROM tbl_board
-	  <![CDATA[
-	   WHERE bno > 0
-	  ]]>
-		<!--  <![CDATA[
-		WHERE bon > 0
-		]]> 오더바이랑 같은용도 기본키라서 이렇게하면 코스트가 낮아짐 -->
+		SELECT * 
+		FROM (
+		    select /*+index_desc(TBL_BOARD PK_BOARD)*/ 
+		    		ROWNUM RN, 
+		    		BNO, 
+		    		TITLE, 
+		    		WRITER,
+		    		REGDATE
+		    from tbl_board
+		    <![CDATA[
+		     WHERE ROWNUM <= #{end}
+		    ]]>
+	    	
+	    	<include refid="criteria"></include>
+	    	
+		)
+		<![CDATA[
+			WHERE RN >= #{start}
+		]]>
 	</select>
+	<!--  <![CDATA[]]> 쓰는이유는 = 기호 인식 못함 -->
+	
+	<!-- 카운트 -->
+	<select id="getCount" resultType="int">
+	  SELECT COUNT(*) FROM TBL_BOARD
+	  <where>
+	  	<include refid="criteria"></include>
+	  </where>
+	</select>
+	
+	<!-- 쿼리 반복되면 이걸 불러서 사용가능 -->
+	<sql id="criteria">
+		<if test="keyword != null and !keyword.equals('')">
+			<trim prefix=" and ( " suffix=" ) " prefixOverrides="or">
+				<foreach item="type" collection="typeArr">
+					<trim prefix="or">
+						<choose>
+							<when test="type=='T'.toString() ">
+								TITLE LIKE '%' || #{keyword} || '%'
+							</when>
+							<when test="type=='C'.toString() ">
+								CONTENT LIKE '%' || #{keyword} || '%'
+							</when>
+							<when test="type=='W'.toString() ">
+								WRITER LIKE '%' || #{keyword} || '%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+    	</if>
+	</sql>
 
 </mapper>

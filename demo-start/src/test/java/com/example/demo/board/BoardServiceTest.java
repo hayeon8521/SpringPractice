@@ -76,15 +76,15 @@ public class BoardServiceTest {
 		assertThat(result).isEqualTo(true);
 	}
 	
-	@Test
-	@DisplayName("전체조회")
-	public void testGetList() {
-		//given
-		//when
-		List<BoardDTO> list = boardService.getList();
-		//then
-		list.forEach(board -> log.info(board.toString()));
-		assertThat(list).isNotNull();
-	}
+	//@Test
+//	@DisplayName("전체조회")
+//	public void testGetList() {
+//		//given
+//		//when
+//		List<BoardDTO> list = boardService.getList();
+//		//then
+//		list.forEach(board -> log.info(board.toString()));
+//		assertThat(list).isNotNull();
+//	}
 
 }

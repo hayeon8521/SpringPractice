@@ -2,15 +2,18 @@ package com.example.demo.board.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.board.service.BoardDTO;
+import com.example.demo.board.service.BoardSearchDTO;
 import com.example.demo.board.service.BoardService;
+import com.example.demo.common.Paging;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,19 +29,41 @@ public class BoardController {
 
 	//전체목록
 	@GetMapping("/list")
-	public void list(Model model) {
+	public void list(Model model, 
+			         BoardSearchDTO searchDTO,
+			         Paging paging) {
 		log.info("list");
-		model.addAttribute("list", boardService.getList());
+		
+		//한페이지에 몇개 나오게 할껀지 (이제 화면에 불러오니까 없애야함)
+		//paging.setPageUnit(10);
+		
+		//페이징 토탈 카운터 불러오는것
+		paging.setTotalRecord(boardService.getCount(searchDTO));
+		
+		//페이징 구하는거
+		searchDTO.setStart(paging.getFirst());
+		searchDTO.setEnd(paging.getLast());
+		
+		//모델에 searchDTO랑 paging 은 자동으로 들어감
+		model.addAttribute("list", boardService.getList(searchDTO));
 	}
 	
 	//등록
+	//유효성 검사를 위해 BoardDTO board 이걸 넣음
 	@GetMapping("/register")
-	public void register() {
+	public void register(BoardDTO board) {
 	}
 	
 	//등록
 	@PostMapping("/register")
-	public String registerPrc(BoardDTO board, RedirectAttributes rttr) {
+	//유효성 검사 체크까지
+	public String registerPrc(@Validated BoardDTO board,
+			                  BindingResult bindingResult,
+			                  RedirectAttributes rttr) {
+		if(bindingResult.hasErrors()) {
+			//유효성 검사에 충족 못했으면 페이지 다시 돌려보내라
+			return "board/register";
+		}
 		log.info("register");
 		boardService.register(board);
 		

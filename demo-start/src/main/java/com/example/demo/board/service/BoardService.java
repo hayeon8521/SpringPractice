@@ -14,5 +14,7 @@ public interface BoardService {
 	//삭제
 	public boolean remove(Long bno);
 	//여러건 조회
-	public List<BoardDTO> getList();
+	public List<BoardDTO> getList(BoardSearchDTO searchDTO);
+	//카운터
+	public int getCount(BoardSearchDTO searchDTO);
 }

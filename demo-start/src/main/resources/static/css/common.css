@@ -5,3 +5,6 @@ body {
 table td, table th {
 	vertical-align: middle;
 }
+.error {
+	color : red;
+}
