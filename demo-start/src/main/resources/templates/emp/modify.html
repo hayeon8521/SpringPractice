@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<link href="/css/common.css" rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<title>modify.html</title>
+</head>
+
+<body>
+	<div class="container">
+		<h3>사원정보 수정</h3>
+		<div class="border border-dark-subtle p-3">
+			<form id="modifyform" action="/emp/modify" method="post"
+				th:object="${emp}">
+
+				<div class="mb-3">
+					<label for="employeeId" class="form-label">사원번호</label> <input type="text"
+						class="form-control" th:field="*{employeeId}" readonly>
+				</div>
+
+				<div class="mb-3">
+					<label for="firstName" class="form-label">성</label> <input type="text"
+						class="form-control" th:field="*{firstName}">
+				</div>
+
+				<div class="mb-3">
+					<label for="lastName" class="form-label">이름</label> <input type="text"
+						class="form-control" th:field="*{lastName}">
+				</div>
+
+				<div class="mb-3">
+					<label for="email" class="form-label">이메일</label> <input
+						type="text" class="form-control" th:field="*{email}">
+				</div>
+				
+				<div class="mb-3">
+					<label for="phoneNumber" class="form-label">연락처</label> <input
+						type="text" class="form-control" th:field="*{phoneNumber}">
+				</div>
+				
+				<div class="mb-3">
+					<label for="salary" class="form-label">급여</label> <input
+						type="text" class="form-control" th:field="*{salary}">
+				</div>
+				
+				<div class="mb-3">
+					<label for="commissionPct" class="form-label">커미션</label> <input
+						type="text" class="form-control" th:field="*{commissionPct}">
+				</div>
+				
+				<button class="btn btn-success" type="button" data-bs-toggle="modal"
+					data-bs-target="#modifymodal">수정</button>
+				<a href="/emp/list" class="btn btn-primary">목록</a> <span
+					style="color: red;" id="guidespan"></span>
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modifymodal" tabindex="-1"
+		aria-labelledby="modifymodalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="modifymodalLabel">수정</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">사원정보를 수정 하시겠습니까?</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary" onclick="register();">수정</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function register() {
+			let firstName = document.querySelector('#firstName').value;
+			let lastName = document.querySelector('#lastName').value;
+			let email = document.querySelector('#email').value;
+			const modal = bootstrap.Modal.getInstance(document
+					.querySelector('#modifymodal'));
+
+			if (firstName && lastName && email) {
+				document.querySelector('#modifyform').submit();
+			} else {
+				document.querySelector('#guidespan').innerText = '모든 값을 입력해 주세요';
+				modal.hide();
+			}
+		}
+	</script>
+
+</body>
+
+</html>
