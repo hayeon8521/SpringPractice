@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  layout:decorate="~{layouts/layout}">
 
 <head>
 <meta charset="UTF-8">
-<link href="/css/common.css" rel="stylesheet">
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link
@@ -18,7 +17,7 @@
 <!-- <input type="text" class="form-control" th:field="*{title}"> -->
 
 <body>
-	<div class="container">
+	<div class="container" layout:fragment="content">
 		<h3>게시글 수정</h3>
 		<div class="border border-dark-subtle p-3">
 			<form id="modifyform" action="/board/modify" method="post"
@@ -49,9 +48,11 @@
 					style="color: red;" id="guidespan"></span>
 			</form>
 		</div>
-	</div>
-
-	<!-- Modal -->
+		
+		
+		
+		
+		<!-- Modal -->
 	<div class="modal fade" id="modifymodal" tabindex="-1"
 		aria-labelledby="modifymodalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -86,7 +87,11 @@
 			}
 		}
 	</script>
-
+		
+		
+		
+		
+	</div>
 </body>
 
 </html>

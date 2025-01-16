@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{layouts/layout}">
 
 <head>
 <meta charset="UTF-8">
@@ -10,7 +11,6 @@
 	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
-<link href="/css/common.css" rel="stylesheet">
 <title>get.html</title>
 <style>
 table th {
@@ -21,16 +21,98 @@ table td {
 	text-align: center;
 }
 </style>
+<script th:inline="javascript">
+	//게시글 번호 가져오는거
+	const bno = [[${board.bno}]];
+		
+		
+	window.addEventListener("DOMContentLoaded", function() {
+		
+		//페이지 로딩하면 아래 함수 호출할꺼임 (1)
+		getReply();
+		
+		//영역에 이벤트 걸어주는거
+		delReply();
+		
+		const toastLiveExample = document.getElementById('liveToast');
+		const toastBootstrap = bootstrap.Toast.getOrCreateInstance(
+				toastLiveExample, {
+					delay : 1000
+				});
+	});
+	
+	//댓글 삭제 이벤트 처리하기
+	function delReply(){
+		//부모한테 이벤트 걸고
+		document.querySelector(".replys").addEventListener("click", function(){
+			//이벤트를 자식 클래스한테 위임한다 ( 클래스가 이거일때만 작동 한다 )
+			if(event.target.classList.contains("btnReplyDel")){
+				// 버튼을 포함하는 부모태그를 찾는다
+				const div = event.target.closest(".row");
+				// 삭제할 댓글 번호를 받아온다
+				const rno = event.target.dataset.rno;
+				// 서버 삭제 요청
+				const url = `/replies/${rno}`;
+				//패치는 디폴트타임이 겟임!! 그래서 값을 넣어줘야함
+				fetch(url, {method:"delete"})
+				.then(result => result.text() )		//json, string 인지 잘 확인해야한다!!!! (컨트롤러에 리턴타입 잘확인해야함 지금은 String임)
+				.then(result => div.remove() )				
+			}
+		});
+		
+	}
+	
+	//댓글 삭제 결과 처리
+	
+	
+	//http://localhost:81/replies/pages/384/1
+	//댓글 (호출) 가져오기  (2)
+	function getReply(){
+		const url = `/replies/pages/${bno}/1`;
+		fetch(url)
+		.then(result=>result.json())
+		.then(result=> getReplyProc(result) )
+	}
+	
+	//댓글 가져온거 처리 하기  (3)
+	function getReplyProc(result){
+		const replys = document.querySelector(".replys");
+		result.list.forEach(item => {
+			const html = `<div class="row">
+							  <div class="col-6">${item.reply}</div>
+							  <div class="col-3">${item.replyer}</div>
+							  <div class="col-3"><button type="button" data-rno="${item.rno}" class="btn btn-danger btnReplyDel">삭제</button></div>
+						  </div>`;
+			replys.insertAdjacentHTML("beforeend", html);
+		});
+	}
+	
+	
+	
+	
+	function register() {
+		let bno = document.querySelector('#bno').innerText;
+		const modal = bootstrap.Modal.getInstance(document
+				.querySelector('#removemodal'));
+		if (bno) {
+			location.href = '/board/remove?bno=' + bno
+		} else {
+			document.querySelector('.toast-body').innerText = '삭제 실패 되었습니다.';
+			toastBootstrap.show();
+			modal.hide();
+		}
+	}
+</script>
 </head>
 
 <body>
-	<div class="container">
+	<div class="container" layout:fragment="content">
 		<button class="btn btn-warning"
 			th:onclick="|location.href='modify?bno=${board.bno}'|">수정</button>
 		<!-- <button class="btn btn-danger"
 			th:onclick="|location.href='remove?bno=${board.bno}'|">삭제</button> -->
 		<button class="btn btn-danger" type="button" data-bs-toggle="modal"
-				data-bs-target="#removemodal">삭제</button>
+			data-bs-target="#removemodal">삭제</button>
 		<button class="btn btn-primary" th:onclick="|location.href='list'|">목록</button>
 		<table class="table table-info table-striped-columns">
 			<tr>
@@ -54,55 +136,45 @@ table td {
 				<td th:text="${#dates.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 			</tr>
 		</table>
+		<div class="card mt-4">
+			<div class="card-header">댓글</div>
+			<div class="card-body replys"></div>
+		</div>
+
+
+		<!-- 처리 토스트 -->
+		<div class="toast-container position-fixed top-0 end-0 p-3">
+			<div id="liveToast" class="toast" role="alert" aria-live="assertive"
+				aria-atomic="true">
+				<div class="toast-header">
+					<strong class="me-auto">처리 실패</strong>
+					<button type="button" class="btn-close" data-bs-dismiss="toast"
+						aria-label="Close"></button>
+				</div>
+				<div class="toast-body">삭제 실패 했습니다.</div>
+			</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="removemodal" tabindex="-1"
+			aria-labelledby="removemodalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="removemodalLabel">삭제</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">게시글을 삭제 하시겠습니까?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-danger" onclick="register();">삭제</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
 	</div>
 </body>
-
-<!-- 처리 토스트 -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-	<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-		<div class="toast-header">
-			<strong class="me-auto">처리 실패</strong>
-			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-		</div>
-		<div class="toast-body">삭제 실패 했습니다.
-		</div>
-	</div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="removemodal" tabindex="-1"
-	aria-labelledby="removemodalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="removemodalLabel">삭제</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body">게시글을 삭제 하시겠습니까?</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-danger" onclick="register();">삭제</button>
-			</div>
-		</div>
-	</div>
-</div>
-<script>
-	const toastLiveExample = document.getElementById('liveToast');
-	const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample, { delay: 1000 });
-
-	function register() {
-		let bno = document.querySelector('#bno').innerText;
-		const modal = bootstrap.Modal.getInstance(document
-				.querySelector('#removemodal'));
-		if (bno) {
-			location.href='remove?bno='+bno
-		} else {
-			document.querySelector('.toast-body').innerText = '삭제 실패 되었습니다.';
-			toastBootstrap.show();
-			modal.hide();
-		}
-	}
-</script>
-
 </html>

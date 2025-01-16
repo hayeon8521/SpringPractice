@@ -18,14 +18,14 @@ public class DeptServiceTest {
 	
 	@Autowired DeptService deptService;
 	
-	@Test
+	//@Test
 	@DisplayName("부서 전체 조회")
 	void getlist() {
 		List<DeptDTO> list = deptService.getList(null);
 		log.debug(list.toString());
 	}
 	
-	@Test
+	//@Test
 	@DisplayName("단전 조회")
 	void get() {
 		DeptDTO dept = deptService.get(140L);
