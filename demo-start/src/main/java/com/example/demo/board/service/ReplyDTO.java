@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//리플 DB 정보 가져오는거
 @Data
 @Builder
 @NoArgsConstructor

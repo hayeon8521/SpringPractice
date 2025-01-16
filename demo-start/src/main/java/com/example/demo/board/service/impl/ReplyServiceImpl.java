@@ -47,8 +47,12 @@ public class ReplyServiceImpl implements ReplyService {
 	// d
 	@Override
 	public ReplyPageDTO getList(ReplySearchDTO replySearch, Long bno) {
+		log.info("★★★bno"+bno);
+		//처리된 결과를 객체생성해서 매퍼에 보내고 돌려받음
 		return new ReplyPageDTO(
+				//게시글에 몇개의 뎃글이 있는지
 				replyMapper.getCountByBno(bno),
+				//1페이지 10개씩 해당뎃글 가져오기
 				replyMapper.getList(replySearch, bno) 
 		);
 	}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  layout:decorate="~{layouts/layout}">
 
 <head>
 <meta charset="UTF-8">
@@ -23,7 +23,7 @@ table td {
 </style>
 </head>
 
-<body>
+<body layout:fragment="content">
 	<div class="container">
 		<button class="btn btn-warning"
 			th:onclick="|location.href='modify?employeeId=${emp.employeeId}'|">수정</button>

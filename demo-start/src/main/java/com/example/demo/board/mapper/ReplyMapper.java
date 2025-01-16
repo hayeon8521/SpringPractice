@@ -9,10 +9,10 @@ import com.example.demo.board.service.ReplySearchDTO;
 
 public interface ReplyMapper {
 	
-	//삽입 (건수를 받아와야해서)
+	//삽입 (건수를 받아와야해서) d
 	public int insert(ReplyDTO replyDTO);
 	
-	//업데이트 (수정)
+	//업데이트 (수정) d
 	public int update(ReplyDTO replyDTO);
 	
 	//삭제 d
@@ -24,7 +24,8 @@ public interface ReplyMapper {
 	//전체조회 d
 	public List<ReplyDTO> getList(@Param("cri") ReplySearchDTO cri,
 							@Param("bno") Long bno);
-	// d
+	
+	//페이지 카운터( 헤당 게시글에 댓글이 몇개 있는지 ) d
 	public int getCountByBno(Long bno);
 	
 	

@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import com.example.demo.board.service.ReplyPageDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class ReplyControllerTest {
     	//given
     	String requestBody = """
     			{
-    			  "bno": 1,
+    			  "bno": 22,
     			  "reply": "댓글등록",
     			  "replyer": "하연이"
     			}
@@ -55,7 +56,7 @@ public class ReplyControllerTest {
     void getreply() throws Exception {
 
     	//given
-    	Long rno = 45L;
+    	Long rno = 32L;
     	String url = "/replies/"+ rno;
 
     	//when
@@ -70,30 +71,31 @@ public class ReplyControllerTest {
 
     }
 
-//    @Test
-//    @DisplayName("게시글의 reply 조회")
-//    void getreplyByBno() throws Exception {
-//
-//    	//given
-//    	Long bno = 1L;
-//    	int page = 1;
-//    	//String url = String.format("/replies/pages/%d/%d", bno, page);
-//
-//    	//when
-//    	String responseBody = mvc.perform(
-//    			get("/replies/pages/{bno}/{page}",bno, page)
-//    			.accept(MediaType.APPLICATION_JSON_VALUE)
-//    	)
-//    	.andReturn().getResponse().getContentAsString();
-//
-//    	//then
-//    	String json = objectMapper.readTree(responseBody).toPrettyString();
-//    	log.debug(json);
-//
-//    	ReplyPageDTO dto = objectMapper.readValue(responseBody, ReplyPageDTO.class);
-//
-//    	log.debug("replyCnt : " + dto.getReplyCnt() );
-//    	log.debug("first reply : " + dto.getList().get(0).getReply() );
-//    }
+    //@Test
+    @DisplayName("게시글의 reply 조회")
+    void getreplyByBno() throws Exception {
+
+    	//given
+    	Long bno = 22L;
+    	int page = 1;
+    	String url = String.format("/replies/pages/%d/%d", bno, page);
+
+    	//when
+    	String responseBody = mvc.perform(
+    			get("/replies/pages/{bno}/{page}",bno, page)
+    			.accept(MediaType.APPLICATION_JSON_VALUE)
+    	)
+    	.andReturn().getResponse().getContentAsString();
+
+    	//then
+    	String json = objectMapper.readTree(responseBody).toPrettyString();
+    	log.debug(json);
+
+    	ReplyPageDTO dto = objectMapper.readValue(responseBody, ReplyPageDTO.class);
+
+
+    	log.debug("replyCnt : " + dto.getReplyCnt() );
+    	log.debug("first reply : " + dto.getList().get(0).getReply() );
+    }
 
 }

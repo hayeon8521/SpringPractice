@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  layout:decorate="~{layouts/layout}">
 
 <head>
    <meta charset="UTF-8">
@@ -10,7 +10,7 @@
    <title>register.html</title>
 </head>
 
-<body>
+<body layout:fragment="content">
    <div class="container">
       <h3>사원 등록</h3>
       <div class="border border-dark-subtle p-3">

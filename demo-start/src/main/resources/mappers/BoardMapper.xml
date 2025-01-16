@@ -75,7 +75,7 @@
 	  </where>
 	</select>
 	
-	<!-- 쿼리 반복되면 이걸 불러서 사용가능 -->
+	<!-- 검색커리 쿼리 반복되면 이걸 불러서 사용가능 -->
 	<sql id="criteria">
 		<if test="keyword != null and !keyword.equals('')">
 			<trim prefix=" and ( " suffix=" ) " prefixOverrides="or">

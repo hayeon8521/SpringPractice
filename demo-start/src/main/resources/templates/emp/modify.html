@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  layout:decorate="~{layouts/layout}">
 
 <head>
 <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 <title>modify.html</title>
 </head>
 
-<body>
+<body layout:fragment="content">
 	<div class="container">
 		<h3>사원정보 수정</h3>
 		<div class="border border-dark-subtle p-3">

@@ -5,6 +5,7 @@
 	insert, update, delete, read, getList, get
 	 -->
 	 
+	 <!-- 등록 -->
 	 <insert id="insert" parameterType="ReplyDTO">
 		INSERT INTO 
 		tbl_reply ( rno,
@@ -46,7 +47,7 @@
 	   WHERE rno = #{rno}
 	</select>
 	
-	<!-- d -->
+	<!-- 게시글 갯수 세어오기 -->
 	<select id="getCountByBno" resultType="int">
 	<![CDATA[
 		select count(rno)
@@ -58,7 +59,9 @@
 	<!-- 전체조회d -->
 	<select id="getList" resultType="ReplyDTO">
 	<![CDATA[
-		    select
+	select * from (
+		    select	/*+ INDEX_DESC(tbl_reply pk_reply) */
+		    		rownum rn,
 		    		RNO,
 		    		BNO, 
 		    		reply, 
@@ -68,13 +71,10 @@
 		    from tbl_reply
 		    WHERE bno = #{bno}
 		    and rno > 0
+		    and ROWNUM <= ${cri.end}
+    	)
+    where rn >= ${cri.start}
 	]]>
 	</select>
 	
-	<!-- 카운트 -->
-	<select id="getCount" resultType="int">
-	  SELECT COUNT(*) FROM tbl_reply
-	</select>
-
-
 </mapper>

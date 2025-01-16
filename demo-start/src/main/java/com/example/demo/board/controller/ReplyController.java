@@ -49,6 +49,7 @@ public class ReplyController {
 		return "success";
 	}
 	
+	//http://localhost:81/replies/32
 	//단건조회
 	@GetMapping("/{rno}")
 	public ReplyDTO get(@PathVariable(name="rno") Long rno) {
@@ -59,12 +60,16 @@ public class ReplyController {
 	//http://localhost:81/replies/pages/384/1
 	//댓글목록조회
 	@GetMapping("/pages/{bno}/{page}")
+	//리플 페이지 DTO로 리턴 받는데 (
 	public ReplyPageDTO getList(
+			//게시글번호랑 뎃글페이지번호 받아옴
 			@PathVariable(name="page") int page,
 			@PathVariable(name="bno") Long bno ) {
 		
+		//해당VO에 넣는데 1페이지에 10개씩 출력 으로 한다
 		ReplySearchDTO replySearchDTO = new ReplySearchDTO(page, 10);
 		
+		//담아논 객체를 읽어오는 서비스에 던짐 (페이지네이션정보, 게시글번호)
 		return service.getList(replySearchDTO, bno);
 	}
 
