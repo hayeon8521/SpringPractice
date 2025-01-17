@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@RestController
+@RestController	//★★★
 @AllArgsConstructor
 @RequestMapping("/replies/*")
 public class ReplyController {
@@ -26,6 +26,7 @@ public class ReplyController {
 	private final ReplyService service;
 	
 	//등록처리
+	//@RequestBody이걸 사용함으로 받아오는값을 객체로 만들어서 dto에 넣는다
 	@PostMapping("/new")
 	public ReplyDTO register(@RequestBody ReplyDTO dto) {
 		service.register(dto);
@@ -38,6 +39,7 @@ public class ReplyController {
 			@RequestBody ReplyDTO replyDTO,
 			@PathVariable(name="rno") Long rno) {
 		replyDTO.setRno(rno);
+		service.modify(replyDTO);
 		return "success";
 	}
 	
@@ -67,7 +69,7 @@ public class ReplyController {
 			@PathVariable(name="bno") Long bno ) {
 		
 		//해당VO에 넣는데 1페이지에 10개씩 출력 으로 한다
-		ReplySearchDTO replySearchDTO = new ReplySearchDTO(page, 10);
+		ReplySearchDTO replySearchDTO = new ReplySearchDTO(page, 3);
 		
 		//담아논 객체를 읽어오는 서비스에 던짐 (페이지네이션정보, 게시글번호)
 		return service.getList(replySearchDTO, bno);

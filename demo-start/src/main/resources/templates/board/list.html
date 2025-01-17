@@ -117,7 +117,6 @@
 			</div>
 		</div>
 		<!-- 검색폼 끝 -->
-
 		<!-- 목록 시작 -->
 		<table class="table table-hover">
 			<thead>
@@ -133,7 +132,9 @@
 				<tr th:each="board, idx : ${list}" th:class="${idx.count} % 2 == 0 ? 'table-primary' : 'table-success'">
 					<td th:text="${board.bno}">1</td>
 					<!-- ht에서는 백팁이 파이프라인 -->
-					<td th:text="${board.title}" th:onclick="|location.href='get?bno=${board.bno}'|">제목</td>
+					<!-- <td th:text="${board.title}" th:onclick="|location.href='get?bno=${board.bno}'|">제목</td> -->
+					<!-- <td th:onclick="|location.href='get?bno=${board.bno}'|">[[${board.title}]] [ [[${board.replycnt}]] ]</td> -->
+					<td th:text="|${board.title} [${board.replycnt}]|" th:onclick="|location.href='get?bno=${board.bno}'|">제목</td>
 					<td th:text="${board.writer}">작성자</td>
 					<td th:text="${#dates.format(board.regdate, 'yyyy-MM-dd HH:mm:ss')}">2025/01/06</td>
 					<td>
@@ -166,9 +167,6 @@
 			</ul>
 		</nav>
 		<!-- 페이징 종료 -->
-		
-		
-		
 		
 		<!-- 처리 토스트 -->
 	<div class="toast-container position-fixed top-0 end-0 p-3">

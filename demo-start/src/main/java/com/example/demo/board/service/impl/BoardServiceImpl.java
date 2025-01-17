@@ -3,8 +3,10 @@ package com.example.demo.board.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.board.mapper.BoardMapper;
+import com.example.demo.board.mapper.ReplyMapper;
 import com.example.demo.board.service.BoardDTO;
 import com.example.demo.board.service.BoardSearchDTO;
 import com.example.demo.board.service.BoardService;
@@ -21,6 +23,9 @@ public class BoardServiceImpl implements BoardService{
 	
 	//보드 맵퍼 가져오기 (생성자 인젝트)
 	private final BoardMapper boardMapper;
+	
+	//댓글 맵퍼
+	private final ReplyMapper replyMapper;
 
 	@Override
 	public void register(BoardDTO board) {
@@ -32,10 +37,16 @@ public class BoardServiceImpl implements BoardService{
 	}
 	@Override
 	public boolean modify(BoardDTO board) {
+		//게시글 업데이트
 		return boardMapper.update(board) == 1 ? true : false;
 	}
 	@Override
+	@Transactional	// 이게 다해줌 (트렌젝션 으로 모두 처리했을경우만 진행되게 해줌)
 	public boolean remove(Long bno) {
+		//댓글삭제
+		replyMapper.deleteByBno(bno);
+		
+		//게시글삭제
 		return boardMapper.delete(bno) == 1 ? true : false;
 	}
 	@Override

@@ -57,7 +57,7 @@ table td {
 			</tr>
 			<tr>
 				<th>업무</th>
-				<td th:text="${emp.jobId}"></td>
+				<td th:text="|${emp.jobTitle} [${emp.jobId}]|"></td>
 			</tr>
 			<tr>
 				<th>급여</th>

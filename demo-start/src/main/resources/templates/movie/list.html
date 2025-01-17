@@ -10,11 +10,12 @@
 	
 	<script th:inline="javascript">
 	window.addEventListener("DOMContentLoaded", function() {
-		getMovie();
+		
+		infomovie();
 	});
 	
-	function getMovie(){
-		const url = `/moviedata/20250115`;
+	function getMovie(moviedate2){
+		const url = `/moviedata/${moviedate2}`;
 		fetch(url)
 		.then(result=>result.json())
 		.then(result=> getMovieProc(result) )
@@ -23,6 +24,7 @@
 	function getMovieProc(result){
 		console.log(result);
 		const movies = document.querySelector(".movies");
+		movies.innerHTML = '';
 		result.list.forEach(item => {
 			const html = `<tr>
 							  <td>${item.rnum}</td>
@@ -35,14 +37,15 @@
 	}
 
 	function infomovie(){
-		let moviedate = document.getElementById("moviedate").value;
-		console.log("moviedate empty check:", moviedate === "");
+		let moviedate = document.querySelector("#moviedate").value;
+		//console.log("moviedate empty check:", moviedate === "");
 		let moviedate2 = '';
-		if (moviedate){
-			console.log(moviedate);
-			moviedate2 = moviedate.replace(/-/g, "");
-			console.log(moviedate2);			
-		}else{
+		//console.log(moviedate);
+		moviedate2 = moviedate.replace(/-/g, "");
+		//console.log(moviedate2);			
+		
+		if (moviedate2 == ''){
+			//console.log('bbb');
 			const today = new Date();
 		    today.setDate(today.getDate() - 1);
 
@@ -51,7 +54,9 @@
 		    const day = String(today.getDate()).padStart(2, "0");
 		    moviedate2 = `${year}${month}${day}`;
 		}
-		console.log('aaa');
+		//console.log('aaa'+moviedate2);
+		
+		getMovie(moviedate2);
 	}
 	</script>
 	

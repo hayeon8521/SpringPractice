@@ -25,8 +25,8 @@ public class DeptServiceImpl implements DeptService{
 	}
 
 	@Override
-	public List<DeptDTO> getList(DeptSearchDTO searchDTO) {
-		return deptMapper.getList(searchDTO);
+	public List<DeptDTO> getList() {
+		return deptMapper.getList();
 	}
 
 }

@@ -40,6 +40,23 @@
                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:value="${empDTO.phoneNumber}">
             </div>
             
+            <!-- <input type="hidden" id="departmentId" name="departmentId" value="50"> -->
+            <div class="mb-3">
+               <label for="departmentId" class="form-label">부서</label>
+               <!-- <tr th:each="emp, idx : ${list}" th:class="${idx.count} % 2 == 0 ? 'table-primary' : 'table-success'"> -->
+               <select name="departmentId" id="departmentId">
+			    	<option  th:each="dept : ${yourdept}" th:value="${dept.departmentId}">[[${dept.departmentName}]]</option>
+			  </select>
+            </div>
+            
+            <div class="mb-3">
+               <label for="jobId" class="form-label">업무</label>
+               <!-- <tr th:each="emp, idx : ${list}" th:class="${idx.count} % 2 == 0 ? 'table-primary' : 'table-success'"> -->
+               <select name="jobId" id="jobId">
+			    	<option  th:each="job : ${yourjob}" th:value="${job.jobId}">[[${job.jobTitle}]]</option>
+			  </select>
+            </div>
+
              <div class="mb-3">
                <label for="salary" class="form-label">급여</label>
                <input type="text" class="form-control" id="salary" name="salary" th:value="${empDTO.salary}">
@@ -50,10 +67,7 @@
                <input type="text" class="form-control" id="commissionPct" name="commissionPct" th:value="${empDTO.commissionPct}">
             </div>
             
-            <input type="hidden" id="jobId" name="jobId" value="SA_REP">
             <input type="hidden" id="managerId" name="managerId" value="100">
-            <input type="hidden" id="departmentId" name="departmentId" value="50">
-            
 
             <button class="btn btn-success" type="button" data-bs-toggle="modal"
                data-bs-target="#registermodal">등록</button>

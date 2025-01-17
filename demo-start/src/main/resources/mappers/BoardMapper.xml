@@ -25,6 +25,11 @@
 		        updateDate = sysdate
 		WHERE bno = #{bno}
 	</update>
+	
+	<update id="updateReplyCnt">
+		update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+	</update>
+
 
 	<!-- 기본키 삭제 -->
 	<delete id="delete" parameterType="long">
@@ -52,7 +57,9 @@
 		    		BNO, 
 		    		TITLE, 
 		    		WRITER,
-		    		REGDATE
+		    		REGDATE,
+		    		updatedate,
+		    		replycnt
 		    from tbl_board
 		    <![CDATA[
 		     WHERE ROWNUM <= #{end}

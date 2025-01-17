@@ -27,4 +27,7 @@ public class EmpDTO {
 	private Double commissionPct;
 	private String managerId;
 	private String departmentId;
+	
+	private String jobTitle;
+	private String departmentName;
 }

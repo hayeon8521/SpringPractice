@@ -6,6 +6,6 @@ public interface DeptService {
 	//단건 조회
 	public DeptDTO get(Long departmentId);
 	//여러건 조회
-	public List<DeptDTO> getList(DeptSearchDTO searchDTO);
+	public List<DeptDTO> getList();
 
 }

@@ -2,6 +2,8 @@ package com.example.demo.board.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.example.demo.board.service.BoardDTO;
 import com.example.demo.board.service.BoardSearchDTO;
 
@@ -24,5 +26,10 @@ public interface BoardMapper {
 	
 	//카운터
 	int getCount(BoardSearchDTO searchDTO);
+	
+	//게시글 수정할때 게시글수 같이 업데이트
+	public void updateReplyCnt(@Param("bno") Long bno, @Param("amount") int amount);
+	
+	
 
 }

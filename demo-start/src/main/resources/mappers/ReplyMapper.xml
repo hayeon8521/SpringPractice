@@ -33,6 +33,12 @@
 	<delete id="delete" parameterType="long">
 		DELETE tbl_reply WHERE rno = #{rno}
 	</delete>
+	
+	<!-- 게시글 삭제 되면 삭제되게 -->
+	<delete id="deleteByBno">
+		DELETE from tbl_reply
+		WHERE bno = #{bno}
+	</delete>
 
 	<!-- 단건조회 --> 
 	<select id="read" resultType="ReplyDTO" parameterType="long">

@@ -62,6 +62,7 @@
 					<th>사원번호</th>
 					<th>성</th>
 					<th>이름</th>
+					<th>JOB</th>
 					<th>입사일</th>
 					<th>관리</th>
 				</tr>
@@ -72,6 +73,7 @@
 					<!-- ht에서는 백팁이 파이프라인 -->
 					<td th:text="${emp.firstName}" th:onclick="|location.href='get?employeeId=${emp.employeeId}'|">제목</td>
 					<td th:text="${emp.lastName}">작성자</td>
+					<td th:text="${emp.jobTitle}">업무명</td>
 					<td th:text="${#dates.format(emp.hireDate, 'yyyy-MM-dd')}">2025/01/06</td>
 					<td>
 						<button class="btn btn-warning" th:onclick="|location.href='modify?employeeId=${emp.employeeId}'|">수정</button>

@@ -29,6 +29,8 @@ public interface ReplyMapper {
 	public int getCountByBno(Long bno);
 	
 	
+	// 게시글 삭제되면 해당 리플 다삭제
+	public int deleteByBno(Long bno);
 	
 	//카운터
 	public int getCount(ReplySearchDTO searchDTO);

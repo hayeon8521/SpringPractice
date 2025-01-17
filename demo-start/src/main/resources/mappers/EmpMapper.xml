@@ -64,6 +64,7 @@ INCREMENT BY 1;
 		    e.PHONE_NUMBER,
 		    e.HIRE_DATE,
 		    e.JOB_ID,
+            j.JOB_TITLE,
 		    e.SALARY,
 		    e.COMMISSION_PCT,
 		    m.FIRST_NAME || ' ' || m.LAST_NAME as MANAGER_ID,
@@ -73,6 +74,8 @@ INCREMENT BY 1;
 		        ON e.MANAGER_ID = m.EMPLOYEE_ID
 		     LEFT JOIN departments d
 		        ON e.DEPARTMENT_ID = d.DEPARTMENT_ID
+             left join jobs j
+                on e.job_id = j.job_id
 		WHERE e.EMPLOYEE_ID = #{employeeId}
 		<!-- SELECT 
 	        *
@@ -82,30 +85,34 @@ INCREMENT BY 1;
 	
 	<!-- 전체조회 -->
 	<select id="getList" resultType="EmpDTO">
-		SELECT * 
+	select * from (
+		SELECT a.* , rownum rn
 		FROM (
-		    select /*+index_desc(EMPLOYEES EMP_EMP_ID_PK)*/ 
-		    		ROWNUM RN, 
-		    		EMPLOYEE_ID,
-					FIRST_NAME,
-					LAST_NAME,
-					EMAIL,
-					PHONE_NUMBER,
-					HIRE_DATE,
-					JOB_ID,
-					SALARY,
-					COMMISSION_PCT,
-					MANAGER_ID,
-					DEPARTMENT_ID
-		    from employees
-		    <![CDATA[
-		     WHERE ROWNUM <= #{end}
-		    ]]>
-	    	
+		    select 
+			        e.EMPLOYEE_ID,
+			        e.FIRST_NAME,
+			        e.LAST_NAME,
+			        e.EMAIL,
+			        e.PHONE_NUMBER,
+			        e.HIRE_DATE,
+			        e.JOB_ID,
+			        e.SALARY,
+			        e.COMMISSION_PCT,
+			        e.MANAGER_ID,
+			        e.DEPARTMENT_ID,
+			        j.job_title,
+			        d.DEPARTMENT_NAME
+			from employees e
+			left join jobs j
+			 on e.job_id = j.job_id
+			left join departments d
+			on e.department_id = d.department_id
 	    	<include refid="criteria"></include>
-	    	
-		)
+	    	order by e.EMPLOYEE_ID DESC
+		) a
 		<![CDATA[
+			WHERE rownum <= #{end}
+			)
 			WHERE RN >= #{start}
 		]]>
 	</select>
@@ -117,6 +124,11 @@ INCREMENT BY 1;
 	  <where>
 	  	<include refid="criteria"></include>
 	  </where>
+	</select>
+	
+	<!-- 직업분류 가져오기 -->
+	<select id="yourJob" resultType="JobsDTO">
+		select * from jobs
 	</select>
 	
 	<!-- 쿼리 반복되면 이걸 불러서 사용가능 -->

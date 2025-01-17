@@ -15,6 +15,7 @@ import com.example.demo.common.Paging;
 import com.example.demo.emp.service.EmpDTO;
 import com.example.demo.emp.service.EmpSearchDTO;
 import com.example.demo.emp.service.EmpService;
+import com.example.demo.insa.service.DeptService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +27,8 @@ import lombok.extern.log4j.Log4j2;
 public class EmpController {
 	
 	private EmpService empService;
+	
+	private DeptService deptService;
 	
 	//전체목록
 	@GetMapping("/list")
@@ -65,7 +68,9 @@ public class EmpController {
 	//등록
 	//유효성 검사를 위해 BoardDTO board 이걸 넣음
 	@GetMapping("/register")
-	public void register(EmpDTO emp) {
+	public void register(EmpDTO emp, Model model) {
+		model.addAttribute("yourjob",empService.yourJob());
+		model.addAttribute("yourdept", deptService.getList());
 	}
 	
 	//등록

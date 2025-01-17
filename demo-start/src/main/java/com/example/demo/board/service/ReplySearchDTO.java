@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReplySearchDTO {
 	
-	int page;	// 몇 페이지 
-	int amount;	//몇건 출력?
+	int page = 1;	// 몇 페이지 
+	int amount = 3;	//몇건 출력?
 
 	public int getStart() {
 		return (page-1)*amount +1;

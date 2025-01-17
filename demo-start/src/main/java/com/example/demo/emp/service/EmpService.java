@@ -15,4 +15,6 @@ public interface EmpService {
 		public List<EmpDTO> getList(EmpSearchDTO searchDTO);
 		//카운터
 		public int getCount(EmpSearchDTO searchDTO);
+		
+		public List<JobsDTO> yourJob();
 }

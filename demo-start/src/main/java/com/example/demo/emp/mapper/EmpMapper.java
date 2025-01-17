@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.emp.service.EmpDTO;
 import com.example.demo.emp.service.EmpSearchDTO;
+import com.example.demo.emp.service.JobsDTO;
 
 public interface EmpMapper {
 	
@@ -24,5 +25,8 @@ public interface EmpMapper {
 		
 		//카운터
 		int getCount(EmpSearchDTO searchDTO);
+		
+		//직업 가져오기
+		public List<JobsDTO> yourJob();
 
 }

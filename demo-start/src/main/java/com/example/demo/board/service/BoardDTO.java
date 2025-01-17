@@ -25,6 +25,8 @@ public class BoardDTO {
 	
 	private Date regdate;
 	private Date updatedate;
+	
+	private int replycnt;
 }
 // Long = 기본타입들을 하나의 객체로 만들어준다 (초기값 null)
 // long = 값만 저장할수있는 기본형  (초기값 0)

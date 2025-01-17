@@ -11,6 +11,6 @@ public interface DeptMapper {
 	DeptDTO read(Long departmentId);
 	
 	//전체조회
-	List<DeptDTO> getList(DeptSearchDTO searchDTO);
+	List<DeptDTO> getList();
 
 }

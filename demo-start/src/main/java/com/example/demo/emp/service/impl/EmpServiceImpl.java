@@ -8,6 +8,7 @@ import com.example.demo.emp.mapper.EmpMapper;
 import com.example.demo.emp.service.EmpDTO;
 import com.example.demo.emp.service.EmpSearchDTO;
 import com.example.demo.emp.service.EmpService;
+import com.example.demo.emp.service.JobsDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -47,6 +48,11 @@ public class EmpServiceImpl implements EmpService {
 	@Override
 	public int getCount(EmpSearchDTO searchDTO) {
 		return empMapper.getCount(searchDTO);
+	}
+
+	@Override
+	public List<JobsDTO> yourJob() {
+		return empMapper.yourJob();
 	}
 	
 }
