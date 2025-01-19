@@ -30,7 +30,7 @@ public class DeptController {
 	//전체 조회
 	@GetMapping("/list")
 	public List<DeptDTO> list() {
-		return deptService.getList(null);
+		return deptService.getList();
 	}
 	
 	//http://localhost:81/dept/get?deptId=100

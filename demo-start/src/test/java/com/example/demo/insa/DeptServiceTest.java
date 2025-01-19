@@ -21,7 +21,7 @@ public class DeptServiceTest {
 	//@Test
 	@DisplayName("부서 전체 조회")
 	void getlist() {
-		List<DeptDTO> list = deptService.getList(null);
+		List<DeptDTO> list = deptService.getList();
 		log.debug(list.toString());
 	}
 	
