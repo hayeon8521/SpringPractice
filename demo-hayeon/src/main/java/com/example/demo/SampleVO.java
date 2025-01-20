@@ -23,6 +23,8 @@ public class SampleVO {
 	//@JsonProperty("fname")
 	private String firstName;	
 	
+	//기본값 설정
+	//@JsonProperty(defaultValue = "hayeon")
 	private String lastName;
 	
 	//날짜 포멧 바꿀수도 있음
