@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.example.demo.customer.domain.Customer;
 import com.example.demo.customer.domain.CustomerRepository;
@@ -11,6 +12,7 @@ import com.example.demo.customer.domain.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@EnableJpaAuditing	//이거 basetime엔트리 클래스 자동 날짜 설정쓰기위해서 박아야함
 @SpringBootApplication
 public class JpaApplication {
 
