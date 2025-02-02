@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot + ag-Grid (Balham Theme)</title>
+
+    <!-- ✅ Balham 테마 스타일 적용 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@33.0.4/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@33.0.4/styles/ag-theme-balham.css">
+
+    <!-- ag-Grid 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@33.0.4/dist/ag-grid-community.min.js"></script>
+</head>
+<body>
+    <h2>Spring Boot + ag-Grid (Balham Theme)</h2>
+
+    <!-- ✅ 테마를 balham으로 변경 -->
+    <div id="myGrid" class="ag-theme-balham" style="width: 600px; height: 400px;"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ✅ 초기 데이터 (API 요청 전)
+            var rowData = [
+                { make: "Tesla", model: "Model Y", price: 64950, electric: true },
+                { make: "Ford", model: "F-Series", price: 33850, electric: false },
+                { make: "Toyota", model: "Corolla", price: 29600, electric: false }
+            ];
+
+            // ✅ ag-Grid 설정
+            const gridOptions = {
+                columnDefs: [
+                    { headerName: "제조사", field: "make", sortable: true, filter: true },
+                    { headerName: "모델", field: "model", sortable: true, filter: true },
+                    { headerName: "가격($)", field: "price", sortable: true, filter: true },
+                    { headerName: "전기차 여부", field: "electric", sortable: true, filter: true }
+                ],
+                rowData: rowData, // ✅ 초기 데이터 설정
+                pagination: true,
+                theme: "legacy",
+                onGridReady: function (params) {
+                    console.log("✅ Grid Ready! API Initialized.");
+                    gridOptions.api = params.api;
+
+                    fetch('/api/users')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("📌 API에서 받은 데이터:", data);
+
+                        // ✅ 기존 데이터 삭제 후 새로운 데이터 추가
+                        if (gridOptions.api) {
+                            const allRows = []; // ✅ 변수 정의 추가
+                            gridOptions.api.forEachNode(node => allRows.push(node.data)); // 모든 행 가져오기
+                            if (allRows.length > 0) {
+                                gridOptions.api.applyTransaction({ remove: allRows }); // 기존 데이터 삭제
+                            }
+                            gridOptions.api.applyTransaction({ add: data }); // 새로운 데이터 추가
+                        } else {
+                            console.error("🚨 Grid API가 아직 초기화되지 않았습니다.");
+                        }
+                    })
+                    .catch(error => console.error("🚨 데이터 로드 실패:", error));
+                }
+            };
+
+            // ✅ ag-Grid 초기화
+            const gridDiv = document.querySelector("#myGrid");
+            agGrid.createGrid(gridDiv, gridOptions);
+        });
+    </script>
+</body>
+</html>
