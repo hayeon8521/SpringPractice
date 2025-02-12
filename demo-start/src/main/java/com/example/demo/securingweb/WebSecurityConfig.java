@@ -27,7 +27,7 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/main", "/fileDown", "/board/list", "/css/*", "/movie/*", "/**").permitAll()
+				.requestMatchers("/main", "/fileDown", "/board/list", "/css/*", "/movie/*", "/**", "/api/**").permitAll()
 				.requestMatchers("/board/*").hasAnyRole("USER","ADMIN")
 				.requestMatchers("/emp/*", "/dept/*").hasRole("ADMIN")
 				.anyRequest().authenticated()
@@ -39,7 +39,10 @@ public class WebSecurityConfig {
 				.permitAll()
 			)
 			.logout((logout) -> logout.permitAll())
-			//.csrf(csrf -> csrf.disable())	// 기본적으로 사용으로 되어있음 이거 없애면 사용임
+			.csrf(csrf -> csrf.disable())	// 기본적으로 사용으로 되어있음 이거 없애면 사용임
+			.cors(cors -> cors
+                    .configurationSource(CorsConfig.corsConfigurationSource())
+            );
 			;
 
 		//http.exceptionHandling(ex -> ex.accessDeniedPage("/error403.html"));
